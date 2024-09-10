@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebAssembly Calculator</title>
+</head>
+<body>
+    <h1>WebAssembly Calculator</h1>
+    <input type="number" id="num1" placeholder="Number 1" />
+    <input type="number" id="num2" placeholder="Number 2" />
+    <button onclick="calculate('add')">Add</button>
+    <button onclick="calculate('subtract')">Subtract</button>
+    <button onclick="calculate('multiply')">Multiply</button>
+    <button onclick="calculate('divide')">Divide</button>
+    <p id="result"></p>
+
+    <script>
+        var Module = {
+            onRuntimeInitialized: function() {
+                // Define the cwrap functions here
+                var add = Module.cwrap('add', 'number', ['number', 'number']);
+                var subtract = Module.cwrap('subtract', 'number', ['number', 'number']);
+                var multiply = Module.cwrap('multiply', 'number', ['number', 'number']);
+                var divide = Module.cwrap('divide', 'number', ['number', 'number']);
+
+                // Define the calculate function that uses the cwrap functions
+                window.calculate = function(operation) {
+                    var num1 = parseFloat(document.getElementById('num1').value);
+                    var num2 = parseFloat(document.getElementById('num2').value);
+                    var result;
+
+                    switch (operation) {
+                        case 'add':
+                            result = add(num1, num2);
+                            break;
+                        case 'subtract':
+                            result = subtract(num1, num2);
+                            break;
+                        case 'multiply':
+                            result = multiply(num1, num2);
+                            break;
+                        case 'divide':
+                            result = divide(num1, num2);
+                            break;
+                    }
+
+                    document.getElementById('result').innerText = 'Result: ' + result;
+                };
+            }
+        };
+    </script>
+    <script src="calculator.js"></script>
+</body>
+</html>
