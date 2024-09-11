@@ -21,6 +21,9 @@ This tutorial demonstrates how to create a simple web calculator using C and Web
 2. **Clone my repo**
 3. **compile**
     ```bash
-   "emcc calculator.c -o calculator.html -s EXPORTED_FUNCTIONS='["_add", "_subtract", "_multiply", "_divide"]' -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]'"
+   emcc calculator.c -o calculator.html \
+    -s EXPORTED_FUNCTIONS='["_add", "_subtract", "_multiply", "_divide", "_is_odd", "_is_prime"]' \
+    -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]'
+
   (you may need to recopy my html)
 4. **open html with Live Server**
