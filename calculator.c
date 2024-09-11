@@ -20,11 +20,11 @@ double divide(double a, double b) {
     if (b != 0) {
         return a / b;
     } else {
-        return 0; // Return 0 for division by zero
+        return 0;
     }
 }
 
-// Function to check if a number is prime
+// Function - check if a number is prime
 int is_prime(int n) {
     if (n <= 1) return 0;
     if (n <= 3) return 1;
@@ -35,7 +35,7 @@ int is_prime(int n) {
     return 1;
 }
 
-// Function to check if a number is odd or even
+// Function - check if a number is odd or even
 int is_odd(int n) {
     return n % 2;
 }
