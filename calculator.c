@@ -2,6 +2,7 @@
 
 // Function to add two numbers
 double add(double a, double b) {
+    printf("called add in c file")
     return a + b;
 }
 
