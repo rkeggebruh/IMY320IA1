@@ -1743,11 +1743,7 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  1024: function() {alert('Called add function in C file');},  
- 1068: function() {alert('Called subtract function in C file');},  
- 1117: function() {alert('Called multiply function in C file');},  
- 1166: function() {alert('Called divide function in C file');},  
- 1213: function() {alert('Error: Division by zero in C file');}
+  
 };
 
 
@@ -1846,35 +1842,6 @@ var ASM_CONSTS = {
       if (Module['extraStackTrace']) js += '\n' + Module['extraStackTrace']();
       return demangleAll(js);
     }
-
-  var readAsmConstArgsArray = [];
-  function readAsmConstArgs(sigPtr, buf) {
-      ;
-      // Nobody should have mutated _readAsmConstArgsArray underneath us to be something else than an array.
-      assert(Array.isArray(readAsmConstArgsArray));
-      // The input buffer is allocated on the stack, so it must be stack-aligned.
-      assert(buf % 16 == 0);
-      readAsmConstArgsArray.length = 0;
-      var ch;
-      // Most arguments are i32s, so shift the buffer pointer so it is a plain
-      // index into HEAP32.
-      buf >>= 2;
-      while (ch = HEAPU8[sigPtr++]) {
-        assert(ch === 100/*'d'*/ || ch === 102/*'f'*/ || ch === 105 /*'i'*/, 'Invalid character ' + ch + '("' + String.fromCharCode(ch) + '") in readAsmConstArgs! Use only "d", "f" or "i", and do not specify "v" for void return argument.');
-        // A double takes two 32-bit slots, and must also be aligned - the backend
-        // will emit padding to avoid that.
-        var readAsmConstArgsDouble = ch < 105;
-        if (readAsmConstArgsDouble && (buf & 1)) buf++;
-        readAsmConstArgsArray.push(readAsmConstArgsDouble ? HEAPF64[buf++ >> 1] : HEAP32[buf]);
-        ++buf;
-      }
-      return readAsmConstArgsArray;
-    }
-  function _emscripten_asm_const_int(code, sigPtr, argbuf) {
-      var args = readAsmConstArgs(sigPtr, argbuf);
-      if (!ASM_CONSTS.hasOwnProperty(code)) abort('No EM_ASM constant found at address ' + code);
-      return ASM_CONSTS[code].apply(null, args);
-    }
 var ASSERTIONS = true;
 
 
@@ -1905,7 +1872,7 @@ function intArrayToString(array) {
 
 
 var asmLibraryArg = {
-  "emscripten_asm_const_int": _emscripten_asm_const_int
+  
 };
 var asm = createWasm();
 /** @type {function(...*):?} */
@@ -1922,6 +1889,12 @@ var _multiply = Module["_multiply"] = createExportWrapper("multiply");
 
 /** @type {function(...*):?} */
 var _divide = Module["_divide"] = createExportWrapper("divide");
+
+/** @type {function(...*):?} */
+var _is_prime = Module["_is_prime"] = createExportWrapper("is_prime");
+
+/** @type {function(...*):?} */
+var _is_odd = Module["_is_odd"] = createExportWrapper("is_odd");
 
 /** @type {function(...*):?} */
 var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");
